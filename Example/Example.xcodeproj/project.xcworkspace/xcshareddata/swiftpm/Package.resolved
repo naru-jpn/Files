@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "/Users/naru/repo/naru-jpn/Files",
+        "state": {
+          "branch": null,
+          "revision": "d9bfe9fcd1bc272badf3d3052e4eb1a394326aa3",
+          "version": "0.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

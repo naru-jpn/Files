@@ -8,16 +8,21 @@ let package = Package(
     products: [
         .library(
             name: "Files",
-            targets: ["Files"]),
+            targets: ["Files"]
+        ),
     ],
     dependencies: [
     ],
     targets: [
         .target(
             name: "Files",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources"
+        ),
         .testTarget(
             name: "FilesTests",
-            dependencies: ["Files"]),
+            dependencies: ["Files"],
+            path: "Tests"
+        ),
     ]
 )

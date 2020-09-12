@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		43D3E709250C7A2D00A6BB7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D3E708250C7A2D00A6BB7D /* Assets.xcassets */; };
 		43D3E70C250C7A2D00A6BB7D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D3E70B250C7A2D00A6BB7D /* Preview Assets.xcassets */; };
 		43D3E70F250C7A2D00A6BB7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D3E70D250C7A2D00A6BB7D /* LaunchScreen.storyboard */; };
+		43D3E718250C866B00A6BB7D /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = 43D3E717250C866B00A6BB7D /* Files */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D3E718250C866B00A6BB7D /* Files in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +93,9 @@
 			dependencies = (
 			);
 			name = Example;
+			packageProductDependencies = (
+				43D3E717250C866B00A6BB7D /* Files */,
+			);
 			productName = Example;
 			productReference = 43D3E6FF250C7A2B00A6BB7D /* Example.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +124,9 @@
 				Base,
 			);
 			mainGroup = 43D3E6F6250C7A2B00A6BB7D;
+			packageReferences = (
+				43D3E716250C866B00A6BB7D /* XCRemoteSwiftPackageReference "Files" */,
+			);
 			productRefGroup = 43D3E700250C7A2B00A6BB7D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -342,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		43D3E716250C866B00A6BB7D /* XCRemoteSwiftPackageReference "Files" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "file:///Users/naru/repo/naru-jpn/Files";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		43D3E717250C866B00A6BB7D /* Files */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 43D3E716250C866B00A6BB7D /* XCRemoteSwiftPackageReference "Files" */;
+			productName = Files;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43D3E6F7250C7A2B00A6BB7D /* Project object */;
 }
