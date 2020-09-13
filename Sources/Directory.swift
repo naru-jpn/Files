@@ -11,6 +11,18 @@ public final class Directory: Content {
     /// URL of this directory.
     public let url: URL
 
+    /// File descriptor to observe update event of directory.
+    private var fd: Int32 = -1
+
+    /// Source to handle event.
+    private var source: DispatchSourceFileSystemObject?
+
+    public var directoryDidChangeHandler: ((Directory) -> Void)? {
+        didSet {
+            didUpdateHandler()
+        }
+    }
+
     init(url: URL) {
         self.url = url
     }
@@ -89,6 +101,29 @@ public final class Directory: Content {
             return false
         }
         return true
+    }
+
+    // MARK: Observe update
+
+    private func didUpdateHandler() {
+        if fd != -1 {
+            close(fd)
+        }
+        guard directoryDidChangeHandler != nil else {
+            return
+        }
+        fd = open(url.path, O_EVTONLY)
+        source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
+        source?.setEventHandler { [weak self] in
+            guard let self = self else { return }
+            self.directoryDidChangeHandler?(self)
+        }
+        source?.setCancelHandler { [weak self] in
+            guard let self = self else { return }
+            self.fd = -1
+            self.source = nil
+        }
+        source?.resume()
     }
 }
 
