@@ -10,7 +10,7 @@ import XCTest
 
 class DirectoryTests: XCTestCase {
     private let testDirectoryName = "test"
-    private let testFileName = "sample.txt"
+    private let testContentName = "sample.txt"
 
     func testDirectoryCreateAndRemove() throws {
         let tmp = Files.root(.tmp)
@@ -26,14 +26,14 @@ class DirectoryTests: XCTestCase {
             XCTAssert(tmp.directory(named: testDirectoryName) == nil)
         }
 
-        XCTContext.runActivity(named: "Create file on tmp directory.") { _ in
-            tmp.createFile(name: testFileName, data: data)
-            XCTAssert(tmp.file(named: testFileName) != nil)
+        XCTContext.runActivity(named: "Create content on tmp directory.") { _ in
+            tmp.createContent(name: testContentName, data: data)
+            XCTAssert(tmp.content(named: testContentName) != nil)
         }
 
-        XCTContext.runActivity(named: "Remove file on tmp directory.") { _ in
-            try? tmp.file(named: testFileName)?.remove()
-            XCTAssert(tmp.file(named: testFileName) == nil)
+        XCTContext.runActivity(named: "Remove content on tmp directory.") { _ in
+            try? tmp.content(named: testContentName)?.remove()
+            XCTAssert(tmp.content(named: testContentName) == nil)
         }
     }
 
@@ -67,10 +67,10 @@ class DirectoryTests: XCTestCase {
             observedCount += 1
         }
 
-        XCTContext.runActivity(named: "Create/Remove file and increment observed count.") { _ in
+        XCTContext.runActivity(named: "Create/Remove content and increment observed count.") { _ in
             // didChangeHandler called twice here.
-            tmp.createFile(name: testFileName, data: data)
-            try? tmp.file(named: testFileName)?.remove()
+            tmp.createContent(name: testContentName, data: data)
+            try? tmp.content(named: testContentName)?.remove()
 
             let expectation = self.expectation(description: "Called did change handler.")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0E-3) {

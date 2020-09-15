@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Directory.swift
 //  
 //
 //  Created by Naruki Chigira on 2020/09/12.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class Directory: Content {
+public final class Directory: Item {
     /// URL of this directory.
     public let url: URL
 
@@ -37,23 +37,23 @@ public final class Directory: Content {
     }
 
     /// Return directory.
-    public var concrete: ConcreteContent {
+    public var concrete: ConcreteItem {
         .directory(self)
     }
 
-    // MARK: Get Files or Directories
+    // MARK: Get Contents or Directories
 
-    /// Get all contents contained this directory.
-    public func contents() -> [Content] {
+    /// Get all items contained this directory.
+    public func items() -> [Item] {
         do {
             let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [])
-            var results: [Content] = []
+            var results: [Item] = []
             for url in urls {
                 var isDirectory: ObjCBool = false
                 guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
                     continue
                 }
-                let result: Content = isDirectory.boolValue ? Directory(url: url) : File(url: url)
+                let result: Item = isDirectory.boolValue ? Directory(url: url) : Content(url: url)
                 results.append(result)
             }
             return results
@@ -62,19 +62,19 @@ public final class Directory: Content {
         }
     }
 
-    /// Get all files contained this directory.
-    public func files() -> [File] {
-        contents().compactMap { $0 as? File }
+    /// Get all contents contained this directory.
+    public func contents() -> [Content] {
+        items().compactMap { $0 as? Content }
     }
 
-    /// Get file with applied name.
-    public func file(named name: String) -> File? {
-        files().first(where: { $0.name == name })
+    /// Get content with applied name.
+    public func content(named name: String) -> Content? {
+        contents().first(where: { $0.name == name })
     }
 
     /// Get all directories contained this directory.
     public func directories() -> [Directory] {
-        contents().compactMap { $0 as? Directory }
+        items().compactMap { $0 as? Directory }
     }
 
     /// Get directory with applied name.
@@ -84,9 +84,9 @@ public final class Directory: Content {
 
     // MARK: Create Files or Directories
 
-    /// Create new file.
+    /// Create new content.
     @discardableResult
-    public func createFile(name: String, data: Data) -> Bool {
+    public func createContent(name: String, data: Data) -> Bool {
         let url = self.url.appendingPathComponent(name)
         return FileManager.default.createFile(atPath: url.path, contents: data, attributes: [:])
     }
