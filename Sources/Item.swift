@@ -7,90 +7,30 @@
 
 import Foundation
 
-public protocol Item {
-    /// URL of this item.
-    var url: URL { get }
+public typealias ItemProtocol = Locatable & FileAttribiutesRepresentable & FileManageable
 
-    /// Name of this item.
-    var name: String { get }
+public struct Item: ItemProtocol, Identifiable {
+    public let url: URL
 
-    /// Content exist or not.
-    var isExist: Bool { get }
+    public let id: String = String(UUID().uuidString.prefix(8))
 
-    /// Return content or directory.
-    var concrete: ConcreteItem { get }
-
-    // MARK: Controls
-
-    /// Remove item.
-    func remove() throws
-
-    /// Move item to destination directory.
-    func move(to directory: Directory) throws
-
-    /// Copy item to destination directory.
-    func copy(to directory: Directory) throws
-
-    // MARK: Attributes
-
-    /// Attributes of the item.
-    var attributes: [FileAttributeKey: Any] { get }
-
-    /// Item’s size, in bytes.
-    ///
-    /// Return 0 if the attributes has no entry for the key.
-    var size: UInt64 { get }
-
-    /// Item’s creation date.
-    var creationDate: Date? { get }
-
-    /// Item’s modification date.
-    var modificationDate: Date? { get }
+    init(url: URL) {
+        self.url = url
+    }
 }
 
-public extension Item {
-    var name: String {
-        url.lastPathComponent
+extension Item {
+    public enum Object {
+        case directory(Directory)
+        case content(Content)
+        case invalid
     }
 
-    func remove() throws {
-        guard isExist else {
-            return
+    public var objectified: Object {
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
+            return .invalid
         }
-        try FileManager.default.removeItem(atPath: url.path)
-    }
-
-    func move(to directory: Directory) throws {
-        guard isExist, directory.isExist else {
-            return
-        }
-        try FileManager.default.moveItem(at: url, to: directory.url)
-    }
-
-    func copy(to directory: Directory) throws {
-        guard isExist, directory.isExist else {
-            return
-        }
-        try FileManager.default.copyItem(at: url, to: directory.url)
-    }
-
-    var attributes: [FileAttributeKey: Any] {
-        do {
-            return try FileManager.default.attributesOfItem(atPath: url.path)
-        } catch {
-            return [:]
-        }
-    }
-
-    var size: UInt64 {
-        (attributes as NSDictionary).fileSize()
-    }
-
-    var creationDate: Date? {
-        (attributes as NSDictionary).fileCreationDate()
-    }
-
-    var modificationDate: Date? {
-        (attributes as NSDictionary).fileModificationDate()
+        return isDirectory.boolValue ? .directory(Directory(url: url)) : .content(Content(url: url))
     }
 }

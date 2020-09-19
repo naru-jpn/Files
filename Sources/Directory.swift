@@ -7,26 +7,20 @@
 
 import Foundation
 
-public final class Directory: Item {
-    /// URL of this directory.
+public typealias DirectoryProtocol = ItemProtocol & FileContainer
+
+/// Represents directory.
+public struct Directory: DirectoryProtocol, Identifiable {
     public let url: URL
 
-    /// File descriptor to observe update event of directory.
-    private var fd: Int32 = -1
-
-    /// Source to handle event.
-    private var source: DispatchSourceFileSystemObject?
-
-    public var directoryDidChangeHandler: ((Directory) -> Void)? {
-        didSet {
-            didUpdateHandler()
-        }
-    }
+    public let id: String = String(UUID().uuidString.prefix(8))
 
     init(url: URL) {
         self.url = url
     }
+}
 
+extension Directory {
     /// Is directory exist or not.
     public var isExist: Bool {
         var isDirectory: ObjCBool = false
@@ -34,11 +28,6 @@ public final class Directory: Item {
             return false
         }
         return isDirectory.boolValue
-    }
-
-    /// Return directory.
-    public var concrete: ConcreteItem {
-        .directory(self)
     }
 
     // MARK: Get Contents or Directories
@@ -49,12 +38,13 @@ public final class Directory: Item {
             let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [])
             var results: [Item] = []
             for url in urls {
-                var isDirectory: ObjCBool = false
-                guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
+                let item = Item(url: url)
+                switch item.objectified {
+                case .content, .directory:
+                    results.append(item)
+                default:
                     continue
                 }
-                let result: Item = isDirectory.boolValue ? Directory(url: url) : Content(url: url)
-                results.append(result)
             }
             return results
         } catch {
@@ -64,7 +54,17 @@ public final class Directory: Item {
 
     /// Get all contents contained this directory.
     public func contents() -> [Content] {
-        items().compactMap { $0 as? Content }
+        let items = self.items()
+        var results: [Content] = []
+        for item in items {
+            switch item.objectified {
+            case let .content(content):
+                results.append(content)
+            default:
+                continue
+            }
+        }
+        return results
     }
 
     /// Get content with applied name.
@@ -74,60 +74,61 @@ public final class Directory: Item {
 
     /// Get all directories contained this directory.
     public func directories() -> [Directory] {
-        items().compactMap { $0 as? Directory }
+        let items = self.items()
+        var results: [Directory] = []
+        for item in items {
+            switch item.objectified {
+            case let .directory(directory):
+                results.append(directory)
+            default:
+                continue
+            }
+        }
+        return results
     }
 
     /// Get directory with applied name.
     public func directory(named name: String) -> Directory? {
         directories().first(where: { $0.name == name })
     }
+}
 
-    // MARK: Create Files or Directories
+extension Directory {
+    // MARK: Observation
 
-    /// Create new content.
-    @discardableResult
-    public func createContent(name: String, data: Data) -> Bool {
-        let url = self.url.appendingPathComponent(name)
-        return FileManager.default.createFile(atPath: url.path, contents: data, attributes: [:])
-    }
+    public final class Observer {
+        /// Handler called when directory is changed.
+        private let handler: () -> ()
 
-    /// Create new directory.
-    @discardableResult
-    public func createDirectory(name: String) -> Bool {
-        let url = self.url.appendingPathComponent(name)
-        do {
-            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: [:])
-        } catch {
-            return false
+        /// File descriptor to observe update event of directory.
+        private let fd: Int32
+
+        /// Source to handle event.
+        private var source: DispatchSourceFileSystemObject
+
+        init(directory: Directory, handler: @escaping (() -> ())) {
+            self.handler = handler
+            fd = open(directory.url.path, O_EVTONLY)
+            source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
+            source.setEventHandler { [weak self] in
+                self?.handler()
+            }
+            source.resume()
         }
-        return true
-    }
 
-    // MARK: Observe update
-
-    private func didUpdateHandler() {
-        if fd != -1 {
+        deinit {
             close(fd)
         }
-        guard directoryDidChangeHandler != nil else {
-            return
-        }
-        fd = open(url.path, O_EVTONLY)
-        source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
-        source?.setEventHandler { [weak self] in
-            guard let self = self else { return }
-            self.directoryDidChangeHandler?(self)
-        }
-        source?.setCancelHandler { [weak self] in
-            guard let self = self else { return }
-            self.fd = -1
-            self.source = nil
-        }
-        source?.resume()
+    }
+
+    public func observe(_ handler: @escaping (() -> ())) -> Directory.Observer {
+        return Directory.Observer(directory: self, handler: handler)
     }
 }
 
 extension Directory: CustomStringConvertible, CustomDebugStringConvertible {
+    // MARK: Description
+
     public var description: String {
         "<Directory: \(name)>"
     }

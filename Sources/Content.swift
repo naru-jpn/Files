@@ -7,15 +7,21 @@
 
 import Foundation
 
-public final class Content: Item {
-    /// URL of this content.
+public typealias ContentProtocol = ItemProtocol & DataContainer
+
+/// Represents data content.
+public struct Content: ContentProtocol, Identifiable {
     public let url: URL
+
+    public let id: String = String(UUID().uuidString.prefix(8))
 
     init(url: URL) {
         self.url = url
     }
+}
 
-    /// Is file exist or not.
+extension Content {
+    /// Is content exist or not.
     public var isExist: Bool {
         var isDirectory: ObjCBool = false
         guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
@@ -23,14 +29,11 @@ public final class Content: Item {
         }
         return isDirectory.boolValue == false
     }
-
-    /// Return content.
-    public var concrete: ConcreteItem {
-        .content(self)
-    }
 }
 
 extension Content: CustomStringConvertible, CustomDebugStringConvertible {
+    // MARK: Description
+
     public var description: String {
         "<Content: \(name)>"
     }

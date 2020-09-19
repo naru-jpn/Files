@@ -11,6 +11,7 @@ import XCTest
 class DirectoryTests: XCTestCase {
     private let testDirectoryName = "test"
     private let testContentName = "sample.txt"
+    private var observer: Directory.Observer?
 
     func testDirectoryCreateAndRemove() throws {
         let tmp = Files.root(.tmp)
@@ -40,8 +41,8 @@ class DirectoryTests: XCTestCase {
     func testObserveDirectoryByChildDirectory() {
         let tmp = Files.root(.tmp)
         var observedCount = 0
-
-        tmp.directoryDidChangeHandler = { _ in
+        
+        observer = tmp.observe {
             observedCount += 1
         }
 
@@ -63,7 +64,7 @@ class DirectoryTests: XCTestCase {
         var observedCount = 0
         let data = "sample".data(using: .utf8)!
 
-        tmp.directoryDidChangeHandler = { _ in
+        observer = tmp.observe {
             observedCount += 1
         }
 
@@ -76,6 +77,31 @@ class DirectoryTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0E-3) {
                 XCTAssert(observedCount >= 2)
                 expectation.fulfill()
+            }
+            wait(for: [expectation], timeout: 5.0E-3)
+        }
+    }
+
+    func testObserverDeInit() {
+        let tmp = Files.root(.tmp)
+        var observedCount = 0
+
+        observer = tmp.observe {
+            observedCount += 1
+        }
+
+        XCTContext.runActivity(named: "Create/Remove directory and increment observed count.") { _ in
+            tmp.createDirectory(name: testDirectoryName)
+
+            let expectation = self.expectation(description: "Called did change handler.")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0E-3) {
+                self.observer = nil
+                try? tmp.directory(named: self.testDirectoryName)?.remove()
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0E-3) {
+                    expectation.fulfill()
+                }
+                XCTAssert(observedCount == 1)
             }
             wait(for: [expectation], timeout: 5.0E-3)
         }
