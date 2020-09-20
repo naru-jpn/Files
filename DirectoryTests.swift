@@ -42,7 +42,7 @@ class DirectoryTests: XCTestCase {
         let tmp = Root.directory(.tmp)
         var observedCount = 0
         
-        observer = tmp.observe {
+        observer = tmp.observe { _ in
             observedCount += 1
         }
 
@@ -55,7 +55,7 @@ class DirectoryTests: XCTestCase {
                 XCTAssert(observedCount == 2)
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 5.0E-3)
+            wait(for: [expectation], timeout: 1.0E-1)
         }
     }
 
@@ -64,7 +64,7 @@ class DirectoryTests: XCTestCase {
         var observedCount = 0
         let data = "sample".data(using: .utf8)!
 
-        observer = tmp.observe {
+        observer = tmp.observe { _ in
             observedCount += 1
         }
 
@@ -78,7 +78,7 @@ class DirectoryTests: XCTestCase {
                 XCTAssert(observedCount >= 2)
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 5.0E-3)
+            wait(for: [expectation], timeout: 1.0E-1)
         }
     }
 
@@ -86,7 +86,7 @@ class DirectoryTests: XCTestCase {
         let tmp = Root.directory(.tmp)
         var observedCount = 0
 
-        observer = tmp.observe {
+        observer = tmp.observe { _ in
             observedCount += 1
         }
 
