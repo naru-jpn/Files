@@ -103,7 +103,7 @@ class DirectoryTests: XCTestCase {
                 }
                 XCTAssert(observedCount == 1)
             }
-            wait(for: [expectation], timeout: 5.0E-3)
+            wait(for: [expectation], timeout: 1.0E-1)
         }
     }
 }

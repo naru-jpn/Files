@@ -12,7 +12,7 @@ public final class Files {
     ///
     /// - File System Basics
     ///   - https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
-    public enum Root: CaseIterable {
+    public enum Root {
         /// Application’s home directory.
         case home
         /// Use this directory to store user-generated content.
@@ -25,6 +25,8 @@ public final class Files {
         case caches
         /// Use this directory to write temporary files that do not need to persist between launches of your app.
         case tmp
+        /// Container directory associated with the specified security application group identifier.
+        case appGroupContainer(groupIdentifier: String)
 
         public var url: URL {
             switch self {
@@ -40,6 +42,11 @@ public final class Files {
                 return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             case .tmp:
                 return URL(fileURLWithPath: NSTemporaryDirectory())
+            case .appGroupContainer(let groupIdentifier):
+                guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier) else {
+                    fatalError("Failed to get app group container with group identifier: \(groupIdentifier).")
+                }
+                return url
             }
         }
     }
@@ -47,7 +54,11 @@ public final class Files {
     public class func root(_ target: Root) -> Directory {
         let url = target.url
         if FileManager.default.fileExists(atPath: url.path) == false {
-            try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: [:])
+            do {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: [:])
+            } catch {
+                fatalError("Failed to create root directory with path: \(url.path).")
+            }
         }
         return Directory(url: url)
     }
