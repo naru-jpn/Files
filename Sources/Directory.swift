@@ -98,7 +98,7 @@ extension Directory {
 
     public final class Observer {
         /// Handler called when directory is changed.
-        private let handler: () -> ()
+        private let handler: ([Item]) -> ()
 
         /// File descriptor to observe update event of directory.
         private let fd: Int32
@@ -106,12 +106,12 @@ extension Directory {
         /// Source to handle event.
         private var source: DispatchSourceFileSystemObject
 
-        init(directory: Directory, handler: @escaping (() -> ())) {
+        init(directory: Directory, handler: @escaping (([Item]) -> ())) {
             self.handler = handler
             fd = open(directory.url.path, O_EVTONLY)
             source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
             source.setEventHandler { [weak self] in
-                self?.handler()
+                self?.handler(directory.items())
             }
             source.resume()
         }
@@ -121,7 +121,7 @@ extension Directory {
         }
     }
 
-    public func observe(_ handler: @escaping (() -> ())) -> Directory.Observer {
+    public func observe(_ handler: @escaping (([Item]) -> ())) -> Directory.Observer {
         return Directory.Observer(directory: self, handler: handler)
     }
 }
