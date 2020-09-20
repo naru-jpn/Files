@@ -13,10 +13,11 @@ public typealias ContentProtocol = ItemProtocol & DataContainer
 public struct Content: ContentProtocol, Identifiable {
     public let url: URL
 
-    public let id: String = String(UUID().uuidString.prefix(8))
+    public let id: String
 
     init(url: URL) {
         self.url = url
+        self.id = url.path
     }
 }
 

@@ -12,10 +12,11 @@ public typealias ItemProtocol = Locatable & FileAttribiutesRepresentable & FileM
 public struct Item: ItemProtocol, Identifiable {
     public let url: URL
 
-    public let id: String = String(UUID().uuidString.prefix(8))
+    public let id: String
 
     init(url: URL) {
         self.url = url
+        self.id = url.path
     }
 }
 
