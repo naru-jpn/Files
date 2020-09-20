@@ -14,7 +14,7 @@ class DirectoryTests: XCTestCase {
     private var observer: Directory.Observer?
 
     func testDirectoryCreateAndRemove() throws {
-        let tmp = Files.root(.tmp)
+        let tmp = Root.directory(.tmp)
         let data = "sample".data(using: .utf8)!
 
         XCTContext.runActivity(named: "Create directory on tmp directory.") { _ in
@@ -39,7 +39,7 @@ class DirectoryTests: XCTestCase {
     }
 
     func testObserveDirectoryByChildDirectory() {
-        let tmp = Files.root(.tmp)
+        let tmp = Root.directory(.tmp)
         var observedCount = 0
         
         observer = tmp.observe {
@@ -60,7 +60,7 @@ class DirectoryTests: XCTestCase {
     }
 
     func testObserveDirectoryByFile() {
-        let tmp = Files.root(.tmp)
+        let tmp = Root.directory(.tmp)
         var observedCount = 0
         let data = "sample".data(using: .utf8)!
 
@@ -83,7 +83,7 @@ class DirectoryTests: XCTestCase {
     }
 
     func testObserverDeInit() {
-        let tmp = Files.root(.tmp)
+        let tmp = Root.directory(.tmp)
         var observedCount = 0
 
         observer = tmp.observe {

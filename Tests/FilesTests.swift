@@ -12,7 +12,7 @@ final class FilesTests: XCTestCase {
         let roots: [Files.Root] = [.home, .documents, .library, .applicationSupport, .caches, .tmp]
         for root in roots {
             XCTContext.runActivity(named: "Check exist \(root)") { _ in
-                XCTAssertTrue(Files.root(root).isExist)
+                XCTAssertTrue(Root.directory(root).isExist)
             }
         }
     }
