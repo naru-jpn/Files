@@ -106,7 +106,7 @@ extension Directory {
         /// Source to handle event.
         private var source: DispatchSourceFileSystemObject
 
-        init(directory: Directory, handler: @escaping (([Item]) -> ())) {
+        public init(directory: Directory, handler: @escaping (([Item]) -> ())) {
             self.handler = handler
             fd = open(directory.url.path, O_EVTONLY)
             source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)

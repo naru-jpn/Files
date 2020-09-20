@@ -32,7 +32,7 @@
 		435ABD922515CFB700CCFE27 /* DataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435ABD912515CFB700CCFE27 /* DataContainer.swift */; };
 		435D3AE2250CB41E00DCEC27 /* DirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D3AE1250CB41E00DCEC27 /* DirectoryTests.swift */; };
 		43710E142515B15A00BDBC3C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43710E132515B15A00BDBC3C /* Item.swift */; };
-		43E91A9D251747CB0063AF25 /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E91A9C251747CB0063AF25 /* Root.swift */; };
+		43E91AB325174F440063AF25 /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E91AB225174F440063AF25 /* Root.swift */; };
 		OBJ_38 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_52 /* Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Files::Files::Product" /* Files.framework */; };
 /* End PBXBuildFile section */
@@ -66,7 +66,7 @@
 		435ABD912515CFB700CCFE27 /* DataContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataContainer.swift; sourceTree = "<group>"; };
 		435D3AE1250CB41E00DCEC27 /* DirectoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryTests.swift; sourceTree = "<group>"; };
 		43710E132515B15A00BDBC3C /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = Sources/Item.swift; sourceTree = "<group>"; };
-		43E91A9C251747CB0063AF25 /* Root.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = SOURCE_ROOT; };
+		43E91AB225174F440063AF25 /* Root.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Root.swift; path = Sources/Root.swift; sourceTree = "<group>"; };
 		"Files::Files::Product" /* Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Files::FilesTests::Product" /* FilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_20 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
@@ -146,7 +146,7 @@
 				432527D2250CAF2D00083D49 /* Directory.swift */,
 				43710E132515B15A00BDBC3C /* Item.swift */,
 				435ABD882515CA2300CCFE27 /* Protocols */,
-				43E91A9C251747CB0063AF25 /* Root.swift */,
+				43E91AB225174F440063AF25 /* Root.swift */,
 			);
 			name = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -245,10 +245,10 @@
 				435ABD902515CE5200CCFE27 /* FileContainer.swift in Sources */,
 				432527D6250CAF2D00083D49 /* Directory.swift in Sources */,
 				435ABD8C2515CA5900CCFE27 /* FileAttribiutesRepresentable.swift in Sources */,
-				43E91A9D251747CB0063AF25 /* Root.swift in Sources */,
 				435ABD8A2515CA3200CCFE27 /* Locatable.swift in Sources */,
 				435ABD922515CFB700CCFE27 /* DataContainer.swift in Sources */,
 				435ABD8E2515CB0A00CCFE27 /* FileManageable.swift in Sources */,
+				43E91AB325174F440063AF25 /* Root.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
