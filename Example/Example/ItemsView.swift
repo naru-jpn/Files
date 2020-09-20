@@ -11,9 +11,15 @@ import SwiftUI
 
 struct ItemsView: View {
     let directory: Directory
+    let viewModel: ItemsViewModel
+
+    init(directory: Directory) {
+        self.directory = directory
+        self.viewModel = ItemsViewModel(directory: directory)
+    }
 
     var body: some View {
-        List(directory.items()) { item in
+        List(viewModel.items) { item in
             switch item.objectified {
             case let .directory(directory):
                 NavigationLink(
@@ -34,6 +40,6 @@ struct ItemsView: View {
 
 struct ItemsView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemsView(directory: Files.root(.home))
+        ItemsView(directory: Root.directory(.home))
     }
 }

@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
         let mainView = NavigationView {
             ItemsView(
-                directory: Files.root(.home)
+                directory: Root.directory(.home)
             )
             .navigationBarTitle("Root")
         }
