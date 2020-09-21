@@ -1,2 +1,2 @@
 # Files
-Framework for iOS to easily control file system.
+Framework to easily browse and control local storage.
