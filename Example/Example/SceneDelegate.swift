@@ -25,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ItemsView(
                 directory: Root.directory(.home)
             )
-            .navigationBarTitle("Root")
         }
 
         // Use a UIHostingController as window root view controller.

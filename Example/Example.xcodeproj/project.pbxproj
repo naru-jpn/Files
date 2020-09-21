@@ -15,6 +15,8 @@
 		43D3E70F250C7A2D00A6BB7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D3E70D250C7A2D00A6BB7D /* LaunchScreen.storyboard */; };
 		43D3E718250C866B00A6BB7D /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = 43D3E717250C866B00A6BB7D /* Files */; };
 		43E91AA7251749160063AF25 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E91AA6251749160063AF25 /* ItemsViewModel.swift */; };
+		43E91ABE2518397E0063AF25 /* CreateDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E91ABD2518397E0063AF25 /* CreateDirectoryView.swift */; };
+		43E91AC32518A9650063AF25 /* CreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E91AC22518A9650063AF25 /* CreateContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		43D3E70E250C7A2D00A6BB7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43D3E710250C7A2D00A6BB7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43E91AA6251749160063AF25 /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
+		43E91ABD2518397E0063AF25 /* CreateDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDirectoryView.swift; sourceTree = "<group>"; };
+		43E91AC22518A9650063AF25 /* CreateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +65,11 @@
 			isa = PBXGroup;
 			children = (
 				43D3E702250C7A2B00A6BB7D /* AppDelegate.swift */,
-				43D3E704250C7A2B00A6BB7D /* SceneDelegate.swift */,
+				43E91AC22518A9650063AF25 /* CreateContentView.swift */,
+				43E91ABD2518397E0063AF25 /* CreateDirectoryView.swift */,
 				4353D34C2510C73D00E308F1 /* ItemsView.swift */,
 				43E91AA6251749160063AF25 /* ItemsViewModel.swift */,
+				43D3E704250C7A2B00A6BB7D /* SceneDelegate.swift */,
 				43D3E708250C7A2D00A6BB7D /* Assets.xcassets */,
 				43D3E70D250C7A2D00A6BB7D /* LaunchScreen.storyboard */,
 				43D3E710250C7A2D00A6BB7D /* Info.plist */,
@@ -157,8 +163,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E91AC32518A9650063AF25 /* CreateContentView.swift in Sources */,
 				43D3E703250C7A2B00A6BB7D /* AppDelegate.swift in Sources */,
 				43D3E705250C7A2B00A6BB7D /* SceneDelegate.swift in Sources */,
+				43E91ABE2518397E0063AF25 /* CreateDirectoryView.swift in Sources */,
 				4353D34D2510C73D00E308F1 /* ItemsView.swift in Sources */,
 				43E91AA7251749160063AF25 /* ItemsViewModel.swift in Sources */,
 			);
@@ -228,7 +236,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -282,7 +290,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
