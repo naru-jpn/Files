@@ -53,6 +53,11 @@ extension Directory {
         }
     }
 
+    /// Get item with applied name.
+    public func item(named name: String) -> Item? {
+        items().first(where: { $0.name == name })
+    }
+
     /// Get all contents contained this directory.
     public func contents() -> [Content] {
         let items = self.items()
@@ -111,8 +116,10 @@ extension Directory {
             self.handler = handler
             fd = open(directory.url.path, O_EVTONLY)
             source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
-            source.setEventHandler { [weak self] in
-                self?.handler(directory.items())
+            source.setEventHandler {
+                DispatchQueue.main.async { [weak self] in
+                    self?.handler(directory.items())
+                }
             }
             source.resume()
         }
