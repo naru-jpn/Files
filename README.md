@@ -1,2 +1,2 @@
 # Files
-Framework to easily browse and control local storage.
+Framework to easily browse, observe and control local storage.
