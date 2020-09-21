@@ -110,18 +110,26 @@ extension Directory {
         private let fd: Int32
 
         /// Source to handle event.
-        private var source: DispatchSourceFileSystemObject
+        private var source: DispatchSourceFileSystemObject? = nil
+
+        /// Ovservation is activated or not.
+        private let isActivated: Bool
 
         public init(directory: Directory, handler: @escaping (([Item]) -> ())) {
             self.handler = handler
             fd = open(directory.url.path, O_EVTONLY)
+            guard fd >= 0 else {
+                isActivated = false
+                return
+            }
+            isActivated = true
             source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: .write)
-            source.setEventHandler {
+            source?.setEventHandler {
                 DispatchQueue.main.async { [weak self] in
                     self?.handler(directory.items())
                 }
             }
-            source.resume()
+            source?.resume()
         }
 
         deinit {
