@@ -21,12 +21,12 @@ let package = Package(
         .target(
             name: "Files",
             dependencies: [],
-            path: "Sources"
+            path: "Sources/Files"
         ),
         .testTarget(
             name: "FilesTests",
             dependencies: ["Files"],
-            path: "Tests"
+            path: "Tests/FilesTests"
         ),
     ]
 )
